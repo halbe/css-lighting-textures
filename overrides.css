@@ -1,0 +1,90 @@
+/* Corrections layered separately so the compact base stylesheet stays untouched. */
+
+.hero {
+  --light: radial-gradient(
+    circle 300px at var(--stage-x, 50%) var(--stage-y, 35%),
+    rgb(241 177 94 / 0.18),
+    transparent 72%
+  );
+}
+
+.shadow-gallery {
+  background: radial-gradient(
+    circle 500px at var(--stage-x, 50%) var(--stage-y, 35%),
+    rgb(255 239 207 / 0.56),
+    rgb(234 158 69 / 0.24) 38%,
+    rgb(196 106 35 / 0.10) 68%,
+    transparent 75%
+  );
+}
+
+.shadow-word {
+  isolation: isolate;
+  display: flex;
+  color: transparent;
+  background: none;
+  filter: none;
+  text-shadow: none;
+}
+
+.shadow-word::before {
+  content: none;
+}
+
+.shadow-char {
+  position: relative;
+  display: inline-block;
+  color: transparent;
+  background: radial-gradient(
+    circle 260px at var(--char-light-x, 50%) var(--char-light-y, 35%),
+    #ffe6b7 0%,
+    #e8a45e 24%,
+    #a55a2d 58%,
+    #63301f 100%
+  );
+  background-clip: text;
+  -webkit-background-clip: text;
+}
+
+.shadow-char::before {
+  content: attr(data-char);
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  color: rgb(0 0 0 / 0.56);
+  text-shadow: none;
+  transform-origin: center;
+  transform:
+    translate(var(--char-shadow-x, 45px), var(--char-shadow-y, 45px))
+    scale(var(--char-shadow-scale, 1.08));
+  filter: blur(var(--char-shadow-blur, 6px));
+}
+
+.glass-lens {
+  overflow: hidden;
+  isolation: isolate;
+  backdrop-filter: blur(6px) saturate(1.7);
+}
+
+.glass-lens::before {
+  content: "";
+  position: absolute;
+  inset: -30%;
+  z-index: -1;
+  background:
+    linear-gradient(90deg, transparent 48%, rgb(255 255 255 / 0.28) 49% 51%, transparent 52%),
+    linear-gradient(transparent 48%, rgb(255 255 255 / 0.28) 49% 51%, transparent 52%);
+  background-size: 70px 70px;
+  transform:
+    translate(calc(var(--dx) * -32px), calc(var(--dy) * -32px))
+    rotate(-8deg)
+    scale(1.28);
+  filter: blur(0.35px);
+  opacity: 0.88;
+}
+
+.glass-lens span,
+.glass-lens small {
+  position: relative;
+  z-index: 1;
+}

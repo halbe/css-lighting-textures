@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A hands-on museum of CSS and SVG lighting illusions.">
+  <title>Luma Lab — CSS Material Experiments</title>
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="overrides.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <svg class="filter-bank" aria-hidden="true">
+    <defs>
+      <filter id="hero-relief" x="-20%" y="-30%" width="140%" height="160%" color-interpolation-filters="sRGB">
+        <feGaussianBlur in="SourceAlpha" stdDeviation="1.6" result="height"/>
+        <feDiffuseLighting in="height" surfaceScale="7" diffuseConstant="1.15" lighting-color="#ffd8a0" result="diffuse">
+          <fePointLight class="svg-light" x="450" y="120" z="140"/>
+        </feDiffuseLighting>
+        <feSpecularLighting in="height" surfaceScale="7" specularConstant="1.2" specularExponent="30" lighting-color="#fff8de" result="specular">
+          <fePointLight class="svg-light" x="450" y="120" z="140"/>
+        </feSpecularLighting>
+        <feComposite in="diffuse" in2="SourceAlpha" operator="in" result="lit"/>
+        <feBlend in="SourceGraphic" in2="lit" mode="multiply" result="shaded"/>
+        <feComposite in="specular" in2="SourceAlpha" operator="in" result="shine"/>
+        <feMerge><feMergeNode in="shaded"/><feMergeNode in="shine"/></feMerge>
+      </filter>
+      <filter id="rough-surface" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
+        <feTurbulence type="fractalNoise" baseFrequency=".018 .1" numOctaves="3" seed="8" result="noise"/>
+        <feDiffuseLighting in="noise" surfaceScale="9" diffuseConstant="1.1" lighting-color="#f2bc78" result="diffuse">
+          <fePointLight class="svg-light" x="450" y="120" z="130"/>
+        </feDiffuseLighting>
+        <feSpecularLighting in="noise" surfaceScale="7" specularConstant=".75" specularExponent="22" lighting-color="#fff4ce" result="specular">
+          <fePointLight class="svg-light" x="450" y="120" z="130"/>
+        </feSpecularLighting>
+        <feBlend in="SourceGraphic" in2="diffuse" mode="multiply" result="base"/>
+        <feBlend in="base" in2="specular" mode="screen"/>
+      </filter>
+      <filter id="heat-haze" x="-15%" y="-15%" width="130%" height="130%">
+        <feTurbulence type="fractalNoise" baseFrequency=".012 .07" numOctaves="2" seed="11" result="noise">
+          <animate attributeName="baseFrequency" dur="8s" values=".012 .07;.018 .09;.012 .07" repeatCount="indefinite"/>
+        </feTurbulence>
+        <feDisplacementMap in="SourceGraphic" in2="noise" scale="24" xChannelSelector="R" yChannelSelector="B"/>
+      </filter>
+    </defs>
+  </svg>
+
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Luma Lab home"><span class="brand-dot"></span>LUMA LAB</a>
+    <nav aria-label="Exhibits"><a href="#light">Light</a><a href="#metal">Metal</a><a href="#glass">Glass</a><a href="#filters">Filters</a></nav>
+    <button class="motion-toggle" type="button" aria-pressed="false">Pause motion</button>
+  </header>
+
+  <main id="top">
+    <section class="hero pointer-stage" data-svg-light>
+      <div class="hero-copy">
+        <p class="eyebrow">EXPERIMENT 00 / MOVE YOUR POINTER</p>
+        <h1>Light without<br><em>the GPU.</em></h1>
+        <p class="lede">A tactile collection of lighting, texture, glass and distortion built with the browser's quieter machinery.</p>
+        <a class="start-link" href="#light">Enter the laboratory <span>↓</span></a>
+      </div>
+      <div class="hero-orb" aria-hidden="true"><span>CSS</span></div>
+      <div class="hero-readout" aria-hidden="true"><span>LIGHT X <b data-readout-x>50</b></span><span>LIGHT Y <b data-readout-y>35</b></span><span>HEIGHT 140</span></div>
+    </section>
+
+    <section class="intro">
+      <p class="section-number">01—06</p>
+      <h2>Six illusions.<br>Zero shaders.</h2>
+      <p>Each specimen exposes a different layer of the rendering stack. Pointer input only changes a handful of CSS variables; the browser does the drawing.</p>
+    </section>
+
+    <section class="exhibit" id="light">
+      <div class="exhibit-copy">
+        <p class="eyebrow">01 / SVG SURFACE LIGHTING</p>
+        <h2>Height becomes light.</h2>
+        <p>Procedural noise acts as a microscopic height field. SVG derives slopes, diffuse shading and a sharp specular response from it.</p>
+        <div class="control-row">
+          <label for="depth">Surface depth <output id="depth-output">9</output></label>
+          <input id="depth" type="range" min="1" max="18" value="9">
+        </div>
+        <button class="details-toggle" type="button" aria-expanded="false">How it works <span>+</span></button>
+        <div class="details"><code>&lt;feTurbulence&gt; → &lt;feDiffuseLighting&gt;<br>+ &lt;feSpecularLighting&gt;</code></div>
+      </div>
+      <div class="specimen rough-specimen pointer-stage" data-svg-light>
+        <div class="rough-surface"><span>HEIGHT<br>FIELD</span></div>
+        <p class="specimen-label">TURBULENCE / POINT LIGHT / PHONG HIGHLIGHT</p>
+      </div>
+    </section>
+
+    <section class="exhibit reverse" id="gradient-light">
+      <div class="exhibit-copy">
+        <p class="eyebrow">02 / CSS POINT LIGHT</p>
+        <h2>The inexpensive fake.</h2>
+        <p>Two radial gradients supply a hot core and broad falloff. Blend modes make the flat illumination feel embedded in the surface.</p>
+        <button class="details-toggle" type="button" aria-expanded="false">How it works <span>+</span></button>
+        <div class="details"><code>radial-gradient(at var(--x) var(--y))<br>background-blend-mode: screen</code></div>
+      </div>
+      <div class="specimen gradient-specimen pointer-stage">
+        <div class="gradient-plate"><span>FOLLOW<br>THE LIGHT</span></div>
+        <p class="specimen-label">RADIAL GRADIENT / SCREEN BLEND / CSS VARIABLES</p>
+      </div>
+    </section>
+
+    <section class="shadow-gallery pointer-stage">
+      <div class="exhibit-copy">
+        <p class="eyebrow">03 / DYNAMIC SHADOWS</p>
+        <h2>Shadows know where the light is.</h2>
+        <p>One point light illuminates the letter faces. Each character casts one independent shadow ray away from the pointer, creating a subtle fan across the background.</p>
+      </div>
+      <div class="shadow-word" aria-label="Cast"><span class="shadow-char" data-char="C">C</span><span class="shadow-char" data-char="A">A</span><span class="shadow-char" data-char="S">S</span><span class="shadow-char" data-char="T">T</span></div>
+    </section>
+
+    <section class="exhibit" id="metal">
+      <div class="exhibit-copy">
+        <p class="eyebrow">04 / ANISOTROPIC METAL</p>
+        <h2>Reflection by misdirection.</h2>
+        <p>Conic gradients, hairline grain and a traveling glint impersonate brushed steel without simulating a physical material.</p>
+      </div>
+      <div class="specimen metal-specimen pointer-stage">
+        <div class="metal-card"><span class="metal-mark">LL</span><strong>SPECIMEN 04</strong><small>BRUSHED / ALLOY</small></div>
+      </div>
+    </section>
+
+    <section class="exhibit reverse" id="glass">
+      <div class="exhibit-copy">
+        <p class="eyebrow">05 / OPTICAL CHEATS</p>
+        <h2>Glass, mostly by suggestion.</h2>
+        <p>CSS cannot refract arbitrary backdrop pixels, so this lens duplicates and magnifies a known background pattern, then adds blur, inner highlights and color fringes.</p>
+      </div>
+      <div class="specimen glass-specimen pointer-stage">
+        <div class="glass-grid" aria-hidden="true"></div>
+        <div class="glass-lens"><span>REFRACT</span><small>KNOWN-BACKGROUND CHEAT</small></div>
+      </div>
+    </section>
+
+    <section class="filter-section" id="filters">
+      <div class="filter-heading"><div><p class="eyebrow">06 / SVG FILTER CABINET</p><h2>Disturb the pixels.</h2></div><p>Procedural noise can displace an otherwise ordinary element. Motion lives inside SVG; no animation loop is required.</p></div>
+      <div class="haze-wrap"><div class="haze-card"><span>HEAT</span><span>HAZE</span></div></div>
+    </section>
+  </main>
+
+  <footer><p>LUMA LAB / 2026</p><p>HTML + CSS + SVG + 2.8 KB OF INTENT</p><a href="#top">BACK TO TOP ↑</a></footer>
+</body>
+</html>
