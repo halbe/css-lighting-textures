@@ -1,8 +1,11 @@
-const CACHE = 'luma-pbr-v1';
+const CACHE = 'luma-pbr-v2';
 const ASSETS = [
   './pbr.html',
   './pbr.css',
   './pbr.js',
+  './multi.html',
+  './multi.css',
+  './multi.js',
   './assets/pbr/metal-color.jpg',
   './assets/pbr/metal-normal.jpg',
   './assets/pbr/metal-roughness.jpg',

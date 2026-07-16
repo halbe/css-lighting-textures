@@ -1,0 +1,60 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Two resizable WebGL canvases fed by one shared decoded PBR texture set.">
+  <title>Luma Lab — Shared Source, Two Canvases</title>
+  <link rel="stylesheet" href="multi.css">
+  <script src="multi.js" defer></script>
+</head>
+<body>
+  <header>
+    <a class="brand" href="index.html"><i></i>LUMA LAB</a>
+    <p>EXPERIMENT 08 / SHARED SOURCE</p>
+    <a href="pbr.html">SINGLE CANVAS ↗</a>
+  </header>
+
+  <main>
+    <section class="intro">
+      <p class="eyebrow">ONE DECODE · TWO GPU UPLOADS</p>
+      <h1>Same material.<br><em>Separate contexts.</em></h1>
+      <p>Both panels receive the same five decoded image sources and the same page-level light. Drag either lower-right corner: the material retains a fixed tile scale while the semantic text reflows.</p>
+      <div class="status"><span></span><strong id="status">LOADING SHARED MAPS</strong><small id="detail">FETCH 1× / DECODE 1× / UPLOAD 2×</small></div>
+    </section>
+
+    <section class="workbench" aria-label="Resizable material panels">
+      <article class="material-panel" data-panel style="width: 520px; height: 440px">
+        <canvas aria-hidden="true"></canvas>
+        <div class="shade" aria-hidden="true"></div>
+        <div class="panel-copy lit-copy">
+          <p>CANVAS A / PRODUCT</p>
+          <h2>Material that makes room.</h2>
+          <p class="body-copy">This remains ordinary selectable HTML. Resize the panel and every line wraps naturally while its independent WebGL canvas reveals more—or fewer—tiles beneath it.</p>
+          <a href="https://www.w3.org/WAI/fundamentals/accessibility-intro/">Read about accessible interfaces <span>↗</span></a>
+        </div>
+        <div class="resize-corner" aria-hidden="true">↘</div>
+      </article>
+
+      <article class="material-panel second" data-panel style="width: 430px; height: 520px">
+        <canvas aria-hidden="true"></canvas>
+        <div class="shade" aria-hidden="true"></div>
+        <div class="panel-copy lit-copy">
+          <p>CANVAS B / NOTE</p>
+          <h2>One source, another shape.</h2>
+          <p class="body-copy">The browser fetched and decoded the PBR maps once. This second context still owns distinct shader programs and GPU texture allocations.</p>
+          <a href="https://registry.khronos.org/webgl/specs/latest/2.0/">WebGL 2 specification <span>↗</span></a>
+        </div>
+        <div class="resize-corner" aria-hidden="true">↘</div>
+      </article>
+    </section>
+
+    <aside class="explanation">
+      <div><strong>SHARED</strong><span>HTTP response<br>Decoded ImageBitmap<br>Light state<br>Shader source</span></div>
+      <div><strong>PER CANVAS</strong><span>WebGL context<br>Compiled program<br>GPU textures<br>Drawing buffer</span></div>
+    </aside>
+  </main>
+
+  <div class="light-marker" aria-hidden="true"><i></i><span>SHARED LIGHT</span></div>
+</body>
+</html>
