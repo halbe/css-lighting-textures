@@ -4,6 +4,8 @@ An interactive collection of lighting, texture, glass, shadow, and distortion ex
 
 No frameworks, Canvas, WebGL, or WebGPU.
 
+The companion `pbr.html` experiment deliberately crosses that boundary: WebGL 2 shades a mapped metal surface while semantic HTML above it mirrors the same light with CSS.
+
 ## Run locally
 
 Open `index.html` in a modern browser.
@@ -16,4 +18,3 @@ Open `index.html` in a modern browser.
 - Brushed-metal reflections
 - Glass and known-background refraction cheats
 - Animated SVG displacement
-
