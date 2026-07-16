@@ -88,3 +88,17 @@
   position: relative;
   z-index: 1;
 }
+
+.footer-labs {
+  display: flex;
+  gap: 28px;
+}
+
+.footer-labs a {
+  color: #c8a879;
+}
+
+.footer-labs a:hover,
+.footer-labs a:focus-visible {
+  color: #fff0d5;
+}
