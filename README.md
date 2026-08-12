@@ -8,6 +8,10 @@ The companion `pbr.html` experiment deliberately crosses that boundary: WebGL 2 
 
 `multi.html` demonstrates two independently resizable WebGL canvases fed by one shared decode of the same PBR source maps. Each context still owns its own GPU texture allocations.
 
+`rain.html` is a configurable SVG rain-wave generator with live controls for droplet density, appearance, motion, and randomized sheet waves.
+
+`snow.html` is its full-page SVG counterpart for depth-layered circular snow, with controls for density, appearance, fall speed, wind, and sway.
+
 ## Run locally
 
 Open `index.html` in a modern browser.

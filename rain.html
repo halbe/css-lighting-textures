@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A configurable SVG rain and rain-wave generator.">
+  <title>Rain Lab — configurable SVG weather</title>
+  <link rel="stylesheet" href="rain.css">
+  <script src="rain.js" defer></script>
+</head>
+<body>
+  <header class="lab-header">
+    <a class="lab-mark" href="index.html"><span></span>LUMA LAB / WEATHER</a>
+    <div class="header-note">CONFIGURABLE SVG WEATHER</div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <p class="kicker">EXPERIMENT / RAIN WAVES</p>
+        <h1>Build your own<br><em>downpour.</em></h1>
+      </div>
+      <p class="intro-copy">Shape a depth-layered SVG storm in real time. Droplets repeat in four offscreen tiles while randomized wave sheets cycle through a fixed eight-tile deck.</p>
+    </section>
+
+    <nav class="weather-tabs" aria-label="Weather effects">
+      <a href="rain.html" aria-current="page"><b>01</b><span>Rain waves</span></a>
+      <a href="snow.html"><b>02</b><span>Circle snow</span></a>
+    </nav>
+
+    <section class="workbench">
+      <div class="stage-shell">
+        <div class="stage" id="stage">
+          <div class="sky-glow"></div>
+          <div class="city city-back"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="city city-front"><i></i><i></i><i></i><i></i></div>
+          <div class="street">
+            <div class="reflection reflection-a"></div>
+            <div class="reflection reflection-b"></div>
+          </div>
+          <div class="lamp"><span></span><i></i></div>
+          <div class="rain-mount" id="rain-mount" aria-hidden="true"></div>
+          <div class="stage-vignette"></div>
+          <div class="stage-caption"><span>SVG</span><strong>Rain waves</strong></div>
+        </div>
+      </div>
+
+      <aside class="control-panel">
+        <div class="panel-head">
+          <div><p>LIVE CONTROLS</p><strong id="status">WARMING UP</strong></div>
+          <button id="pause" type="button" aria-pressed="false">Pause</button>
+        </div>
+
+        <form id="rain-controls">
+          <fieldset>
+            <legend>Droplets</legend>
+            <label><span>Count <output for="drop-count"></output></span><input id="drop-count" data-setting="dropCount" type="range" min="300" max="12000" step="300"></label>
+            <label><span>Length <output for="drop-length"></output></span><input id="drop-length" data-setting="dropLength" type="range" min="0.4" max="2" step="0.05"></label>
+            <label><span>Thickness <output for="drop-width"></output></span><input id="drop-width" data-setting="dropWidth" type="range" min="0.4" max="2.2" step="0.05"></label>
+            <label><span>Opacity <output for="drop-opacity"></output></span><input id="drop-opacity" data-setting="dropOpacity" type="range" min="0.1" max="1.4" step="0.05"></label>
+            <label><span>Velocity <output for="drop-speed"></output></span><input id="drop-speed" data-setting="dropSpeed" type="range" min="0.35" max="2.5" step="0.05"></label>
+            <label><span>Slant <output for="slant"></output></span><input id="slant" data-setting="slant" type="range" min="0" max="30" step="1"></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Wave sheets</legend>
+            <label class="switch-row"><span>Show waves</span><input id="waves-enabled" data-setting="wavesEnabled" type="checkbox" role="switch"></label>
+            <label><span>Sheets / tile <output for="wave-count"></output></span><input id="wave-count" data-setting="waveCount" type="range" min="1" max="4" step="1"></label>
+            <label><span>Falloff radius <output for="wave-width"></output></span><input id="wave-width" data-setting="waveWidth" type="range" min="0.35" max="2" step="0.05"></label>
+            <label><span>Opacity <output for="wave-opacity"></output></span><input id="wave-opacity" data-setting="waveOpacity" type="range" min="0.1" max="2" step="0.05"></label>
+            <label><span>Unevenness <output for="wave-variance"></output></span><input id="wave-variance" data-setting="waveVariance" type="range" min="0.15" max="2.2" step="0.05"></label>
+            <label><span>Centerline <output for="wave-core"></output></span><input id="wave-core" data-setting="waveCore" type="range" min="0" max="2" step="0.05"></label>
+            <label><span>Velocity <output for="wave-speed"></output></span><input id="wave-speed" data-setting="waveSpeed" type="range" min="0.35" max="2.5" step="0.05"></label>
+          </fieldset>
+
+          <div class="control-actions">
+            <button id="new-pattern" type="button">New pattern</button>
+            <button id="reset-controls" type="button">Reset</button>
+          </div>
+        </form>
+
+        <section class="metrics" aria-label="Live performance">
+          <div class="metric metric-primary"><span>Frame rate</span><strong><b id="fps">—</b> FPS</strong><i id="fps-bar"></i></div>
+          <div class="metric"><span>P95 frame</span><strong><b id="p95">—</b> ms</strong></div>
+          <div class="metric"><span>Long frames</span><strong><b id="long-frames">—</b> / s</strong></div>
+          <div class="metric"><span>JS heap</span><strong><b id="heap">—</b></strong></div>
+          <div class="metric"><span>Visual memory*</span><strong><b id="visual-memory">—</b></strong></div>
+          <div class="metric"><span>Rain DOM nodes</span><strong><b id="nodes">—</b></strong></div>
+        </section>
+        <p class="memory-note">* Comparable surface allocation estimate. Browsers may tile, promote, or retain different internal surfaces.</p>
+      </aside>
+    </section>
+
+    <section class="notes">
+      <p class="kicker">IMPLEMENTATION</p>
+      <h2>One renderer.<br><em>Useful controls.</em></h2>
+      <p>The randomized geometry is regenerated only when a structural control changes. Playback-only values update the existing SVG, keeping slider interaction responsive. Settings persist locally; the sheet deck remains fixed at eight tiles per depth.</p>
+    </section>
+  </main>
+
+  <footer><span>RAIN LAB / 2026</span><a href="index.html">Back to Luma Lab ↗</a></footer>
+</body>
+</html>

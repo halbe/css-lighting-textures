@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="A configurable depth-layered SVG circle-snow generator.">
+  <title>Snow Lab — configurable SVG weather</title>
+  <link rel="stylesheet" href="rain.css">
+  <script src="snow.js" defer></script>
+</head>
+<body class="snow-page">
+  <header class="lab-header">
+    <a class="lab-mark" href="index.html"><span></span>LUMA LAB / WEATHER</a>
+    <div class="header-note">CONFIGURABLE SVG WEATHER</div>
+  </header>
+
+  <main>
+    <section class="intro">
+      <div>
+        <p class="kicker">EXPERIMENT / CIRCLE SNOW</p>
+        <h1>Build your own<br><em>whiteout.</em></h1>
+      </div>
+      <p class="intro-copy">Shape a depth-layered SVG snowfall from simple circles. Reusable fields descend at different speeds while wind and broad sway keep the storm from feeling mechanical.</p>
+    </section>
+
+    <nav class="weather-tabs" aria-label="Weather effects">
+      <a href="rain.html"><b>01</b><span>Rain waves</span></a>
+      <a href="snow.html" aria-current="page"><b>02</b><span>Circle snow</span></a>
+    </nav>
+
+    <section class="workbench">
+      <div class="stage-shell">
+        <div class="stage" id="stage">
+          <div class="sky-glow"></div>
+          <div class="city city-back"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+          <div class="city city-front"><i></i><i></i><i></i><i></i></div>
+          <div class="street">
+            <div class="reflection reflection-a"></div>
+            <div class="reflection reflection-b"></div>
+          </div>
+          <div class="lamp"><span></span><i></i></div>
+          <div class="rain-mount snow-mount" id="snow-mount" aria-hidden="true"></div>
+          <div class="stage-vignette"></div>
+          <div class="stage-caption"><span>SVG</span><strong>Circle snow</strong></div>
+        </div>
+      </div>
+
+      <aside class="control-panel">
+        <div class="panel-head">
+          <div><p>LIVE CONTROLS</p><strong id="status">WARMING UP</strong></div>
+          <button id="pause" type="button" aria-pressed="false">Pause</button>
+        </div>
+
+        <form id="snow-controls">
+          <fieldset>
+            <legend>Snow particles</legend>
+            <label><span>Count <output for="snow-count"></output></span><input id="snow-count" data-setting="count" type="range" min="150" max="9000" step="150"></label>
+            <label><span>Size <output for="snow-size"></output></span><input id="snow-size" data-setting="size" type="range" min="0.35" max="2.5" step="0.05"></label>
+            <label><span>Size variance <output for="size-variance"></output></span><input id="size-variance" data-setting="sizeVariance" type="range" min="0" max="1" step="0.05"></label>
+            <label><span>Opacity <output for="snow-opacity"></output></span><input id="snow-opacity" data-setting="opacity" type="range" min="0.1" max="1.4" step="0.05"></label>
+            <label><span>Fall velocity <output for="fall-speed"></output></span><input id="fall-speed" data-setting="fallSpeed" type="range" min="0.25" max="2.5" step="0.05"></label>
+          </fieldset>
+
+          <fieldset>
+            <legend>Air movement</legend>
+            <label><span>Wind <output for="snow-wind"></output></span><input id="snow-wind" data-setting="wind" type="range" min="-1" max="1" step="0.05"></label>
+            <label><span>Sway <output for="snow-sway"></output></span><input id="snow-sway" data-setting="sway" type="range" min="0" max="2.5" step="0.05"></label>
+            <label><span>Sway rate <output for="sway-rate"></output></span><input id="sway-rate" data-setting="swayRate" type="range" min="0.3" max="2.5" step="0.05"></label>
+            <label><span>Depth contrast <output for="depth-contrast"></output></span><input id="depth-contrast" data-setting="depthContrast" type="range" min="0" max="1.8" step="0.05"></label>
+          </fieldset>
+
+          <div class="control-actions">
+            <button id="new-pattern" type="button">New pattern</button>
+            <button id="reset-controls" type="button">Reset</button>
+          </div>
+        </form>
+
+        <section class="metrics" aria-label="Live performance">
+          <div class="metric metric-primary"><span>Frame rate</span><strong><b id="fps">—</b> FPS</strong><i id="fps-bar"></i></div>
+          <div class="metric"><span>P95 frame</span><strong><b id="p95">—</b> ms</strong></div>
+          <div class="metric"><span>Long frames</span><strong><b id="long-frames">—</b> / s</strong></div>
+          <div class="metric"><span>JS heap</span><strong><b id="heap">—</b></strong></div>
+          <div class="metric"><span>Visual memory*</span><strong><b id="visual-memory">—</b></strong></div>
+          <div class="metric"><span>Snow DOM nodes</span><strong><b id="nodes">—</b></strong></div>
+        </section>
+        <p class="memory-note">* Comparable surface allocation estimate. Browsers may tile, promote, or retain different internal surfaces.</p>
+      </aside>
+    </section>
+
+    <section class="notes">
+      <p class="kicker">IMPLEMENTATION</p>
+      <h2>Circles become<br><em>a snowstorm.</em></h2>
+      <p>Seven reusable SVG particle fields provide gradual depth without per-particle animation. Four staggered copies of each field keep their loop resets offscreen; size, opacity, speed, wind, and sway change continuously through the stack.</p>
+    </section>
+  </main>
+
+  <footer><span>SNOW LAB / 2026</span><a href="index.html">Back to Luma Lab ↗</a></footer>
+</body>
+</html>
